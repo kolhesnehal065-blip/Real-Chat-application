@@ -1,0 +1,5 @@
+{
+  "name": "RealChatX",
+  "description": "A high-performance real-time chat platform with private messaging, group chats, and advanced status tracking.",
+  "requestFramePermissions": ["microphone"]
+}
