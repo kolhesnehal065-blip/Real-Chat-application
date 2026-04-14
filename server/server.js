@@ -2,6 +2,7 @@ import express from 'express';
 import http from 'http';
 import { Server } from 'socket.io';
 
+import mongoose from 'mongoose';
 import { connectDB } from './config/db.js';
 import cors from 'cors';
 import dotenv from 'dotenv';
@@ -33,8 +34,6 @@ const io = new Server(server, {
 
 app.set('socketio', io);
 
-const PORT = process.env.PORT || 3000;
-
 // Middleware
 app.use(cors());
 app.use(express.json());
@@ -61,6 +60,15 @@ app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/chats', chatRoutes);
 app.use('/api/v1/messages', messageRoutes);
 app.use('/api/v1/ai', aiRoutes);
+// Health Check Route
+app.get('/api/v1/health', (req, res) => {
+  res.json({ 
+    status: 'ok', 
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime(),
+    mongodb: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected'
+  });
+});
 
 // Push Notification Subscription
 app.post('/api/v1/notifications/subscribe', protect, async (req, res) => {
@@ -272,14 +280,25 @@ async function startServer() {
 
   if (process.env.NODE_ENV === 'production') {
     const distPath = path.join(__dirname, '..', 'client', 'dist');
-    app.use(express.static(distPath));
-    app.get('*', (req, res) => {
-      res.sendFile(path.join(distPath, 'index.html'));
-    });
+    if (import.meta.url) {
+      const fs = await import('fs');
+      if (fs.existsSync(distPath)) {
+        app.use(express.static(distPath));
+        app.get('*', (req, res) => {
+          res.sendFile(path.join(distPath, 'index.html'));
+        });
+        console.log('Serving production build from:', distPath);
+      } else {
+        console.warn('Production build directory not found at:', distPath);
+        console.warn('Please run "npm run build" in the root directory first.');
+      }
+    }
   }
 
-  server.listen(Number(PORT), '0.0.0.0', () => {
-    console.log(`Server running on http://localhost:${PORT}`);
+  const PORT = process.env.PORT || 5080;
+
+  server.listen(Number(PORT), () => {
+    console.log(`Server running in ${process.env.NODE_ENV || 'development'} mode on http://localhost:${PORT}`);
   });
 }
 
