@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { io } from 'socket.io-client';
 import { useAuth } from '../context/AuthContext.jsx';
 
-const ENDPOINT = import.meta.env.VITE_SOCKET_URL || window.location.origin;
+const ENDPOINT = (import.meta.env.VITE_SOCKET_URL || window.location.origin).trim();
 
 export const useSocket = () => {
   const { user } = useAuth();
