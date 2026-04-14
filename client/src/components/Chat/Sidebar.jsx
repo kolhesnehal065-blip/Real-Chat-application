@@ -9,6 +9,7 @@ import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import { format } from 'date-fns';
 import { useTheme } from '../../context/ThemeContext.jsx';
+import { getAssetUrl } from '../../utils/assetUrl.js';
 
 const Sidebar = ({ fetchAgain, socket, closeMobileSidebar }) => {
   const [search, setSearch] = useState('');
@@ -513,7 +514,7 @@ const Sidebar = ({ fetchAgain, socket, closeMobileSidebar }) => {
         <div className="flex items-center gap-3">
           <div className="relative group cursor-pointer">
             <img
-              src={user?.profilePic || `https://ui-avatars.com/api/?name=${user?.name}`}
+              src={getAssetUrl(user?.profilePic) || `https://ui-avatars.com/api/?name=${user?.name}`}
               alt="Profile"
               className={`w-10 h-10 rounded-full object-cover border border-gray-300 dark:border-gray-600 transition-opacity ${updatingProfile ? 'opacity-50' : 'group-hover:opacity-70'}`}
               referrerPolicy="no-referrer" />
@@ -716,7 +717,7 @@ const Sidebar = ({ fetchAgain, socket, closeMobileSidebar }) => {
             className="p-3 mx-3 my-1.5 flex flex-row items-center gap-4 hover:bg-white/80 dark:hover:bg-white/5 hover:shadow-[0_4px_20px_rgba(0,0,0,0.04)] hover:-translate-y-0.5 cursor-pointer transition-all duration-300 rounded-[1.5rem] border border-transparent hover:border-white/40 dark:hover:border-white/10">
             
                 <img
-              src={u.profilePic || `https://ui-avatars.com/api/?name=${u.name}`}
+              src={getAssetUrl(u.profilePic) || `https://ui-avatars.com/api/?name=${u.name}`}
               className="w-12 h-12 rounded-full"
               alt={u.name}
               referrerPolicy="no-referrer" />
@@ -748,8 +749,8 @@ const Sidebar = ({ fetchAgain, socket, closeMobileSidebar }) => {
                     <div className={`p-[2px] rounded-[1.15rem] shadow-sm relative ${isActive ? 'bg-emerald-400/50 dark:bg-emerald-500/30' : 'bg-gradient-to-tr from-emerald-400 via-emerald-400 to-pink-400'}`}>
                       <img
                       src={chat.isGroup ?
-                      chat.groupPic || chat.displayPic || `https://ui-avatars.com/api/?name=${chat.groupName || 'Group'}&background=random` :
-                      chat.displayPic || `https://ui-avatars.com/api/?name=${chat.displayName || 'User'}`
+                      getAssetUrl(chat.groupPic || chat.displayPic) || `https://ui-avatars.com/api/?name=${chat.groupName || 'Group'}&background=random` :
+                      getAssetUrl(chat.displayPic) || `https://ui-avatars.com/api/?name=${chat.displayName || 'User'}`
                       }
                       className="w-12 h-12 rounded-[1rem] object-cover border-2 border-white dark:border-[#1e293b]"
                       alt="Avatar"

@@ -4,6 +4,7 @@ import { useChat } from '../../context/ChatContext.jsx';
 import api from '../../services/api.js';
 import { X, Search, Loader2, UserPlus, UserMinus, LogOut, Camera, Plus } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { getAssetUrl } from '../../utils/assetUrl.js';
 
 const GroupInfo = ({ isOpen, onClose, fetchAgain, setFetchAgain }) => {
   const [groupName, setGroupName] = useState('');
@@ -163,7 +164,7 @@ const GroupInfo = ({ isOpen, onClose, fetchAgain, setFetchAgain }) => {
                 <label className="relative group cursor-pointer block">
                   <div className="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-4 border-transparent shadow-md bg-gray-100 dark:bg-[#334155] flex items-center justify-center group-hover:opacity-90 transition-opacity">
                     {previewPic ? (
-                      <img src={previewPic} alt="Group" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                      <img src={getAssetUrl(previewPic)} alt="Group" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
                     ) : (
                       <Camera className="w-10 h-10 text-gray-400 dark:text-gray-500" />
                     )}
@@ -211,7 +212,7 @@ const GroupInfo = ({ isOpen, onClose, fetchAgain, setFetchAgain }) => {
                   {selectedChat.participants.map((u) => (
                     <div key={u._id} className="flex items-center justify-between p-2 hover:bg-black/5 dark:hover:bg-white/5 rounded-xl transition-colors group/item">
                       <div className="flex items-center gap-3">
-                        <img src={u.profilePic || `https://ui-avatars.com/api/?name=${u.name}`} className="w-9 h-9 md:w-10 md:h-10 rounded-full object-cover shadow-sm" alt={u.name} referrerPolicy="no-referrer" />
+                        <img src={getAssetUrl(u.profilePic) || `https://ui-avatars.com/api/?name=${u.name}`} className="w-9 h-9 md:w-10 md:h-10 rounded-full object-cover shadow-sm" alt={u.name} referrerPolicy="no-referrer" />
                         <div>
                           <p className="text-sm md:text-base font-semibold text-gray-800 dark:text-gray-200">
                             {u._id === user?._id ? 'You' : u.name} 
@@ -259,7 +260,7 @@ const GroupInfo = ({ isOpen, onClose, fetchAgain, setFetchAgain }) => {
                             onClick={() => handleAddUser(u)}
                             className="flex items-center gap-3 p-2 bg-white dark:bg-[#334155] hover:ring-2 hover:ring-[#0ea5e9]/50 cursor-pointer rounded-xl transition-all border border-gray-100 dark:border-gray-700 group/add"
                           >
-                            <img src={u.profilePic || `https://ui-avatars.com/api/?name=${u.name}`} className="w-8 h-8 rounded-full" alt={u.name} />
+                            <img src={getAssetUrl(u.profilePic) || `https://ui-avatars.com/api/?name=${u.name}`} className="w-8 h-8 rounded-full" alt={u.name} />
                             <div className="flex-1 min-w-0">
                               <p className="text-sm font-semibold text-gray-800 dark:text-gray-200 truncate">{u.name}</p>
                             </div>

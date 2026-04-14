@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { PhoneOff, MicOff, Mic, Video, VideoOff } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
+import { getAssetUrl } from '../../utils/assetUrl.js';
 
 const VideoCallInterface = ({ socket, remoteUserId, remoteUserName, remoteUserPic, isIncoming, incomingSignal, onEndCall }) => {
   const { auth } = useAuth();
@@ -179,7 +180,7 @@ const VideoCallInterface = ({ socket, remoteUserId, remoteUserName, remoteUserPi
             ) : (
               <div className="flex flex-col items-center text-center">
                 <div className="w-32 h-32 rounded-full overflow-hidden mb-6 ring-4 ring-[#0ea5e9]/50 shadow-2xl">
-                  <img src={remoteUserPic || `https://ui-avatars.com/api/?name=${remoteUserName}&background=6366f1&color=fff`} alt={callerName} className="w-full h-full object-cover" />
+                  <img src={getAssetUrl(remoteUserPic) || `https://ui-avatars.com/api/?name=${remoteUserName}&background=6366f1&color=fff`} alt={callerName} className="w-full h-full object-cover" />
                 </div>
                 <div className="text-white text-3xl font-bold tracking-tight mb-2">{remoteUserName}</div>
                 <div className="text-emerald-400 font-medium">RealChatX Encrypted Call</div>

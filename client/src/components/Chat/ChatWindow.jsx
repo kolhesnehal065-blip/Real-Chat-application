@@ -11,6 +11,7 @@ import VideoCallInterface from '../Video/VideoCallInterface.jsx';
 import VoiceMessagePlayer from './VoiceMessagePlayer.jsx';
 import EmojiPicker, { Theme } from 'emoji-picker-react';
 import { useTheme } from '../../context/ThemeContext.jsx';
+import { getAssetUrl } from '../../utils/assetUrl.js';
 
 const BurnTimer = ({ expiresAt, onExpire }) => {
   const [timeLeft, setTimeLeft] = useState(Math.max(0, Math.floor((new Date(expiresAt).getTime() - Date.now()) / 1000)));
@@ -853,8 +854,8 @@ const ChatWindow = ({ fetchAgain, setFetchAgain, socket, toggleSidebar }) => {
 
   const getChatAvatar = () => {
     if (!selectedChat) return `https://ui-avatars.com/api/?name=Chat`;
-    if (selectedChat.isGroup) return selectedChat.groupPic || selectedChat.displayPic || `https://ui-avatars.com/api/?name=${selectedChat.groupName || 'Group'}`;
-    return selectedChat.displayPic || selectedChat.otherUser?.profilePic || sender?.profilePic || `https://ui-avatars.com/api/?name=${getChatTitle()}`;
+    if (selectedChat.isGroup) return getAssetUrl(selectedChat.groupPic || selectedChat.displayPic) || `https://ui-avatars.com/api/?name=${selectedChat.groupName || 'Group'}`;
+    return getAssetUrl(selectedChat.displayPic || selectedChat.otherUser?.profilePic || sender?.profilePic) || `https://ui-avatars.com/api/?name=${getChatTitle()}`;
   };
 
   return (
@@ -1253,13 +1254,13 @@ const ChatWindow = ({ fetchAgain, setFetchAgain, socket, toggleSidebar }) => {
                           <div className="mb-1.5 overflow-hidden rounded-lg">
                                   {m.fileType === 'image' ?
                             <div className="relative group/img">
-                                      <img src={m.fileUrl} alt="Sent file" className="max-w-full rounded-lg cursor-pointer hover:brightness-95 transition-all" referrerPolicy="no-referrer" />
+                                      <img src={getAssetUrl(m.fileUrl)} alt="Sent file" className="max-w-full rounded-lg cursor-pointer hover:brightness-95 transition-all" referrerPolicy="no-referrer" />
                                       <div className="absolute inset-0 bg-black/0 group-hover/img:bg-black/5 transition-colors pointer-events-none"></div>
                                     </div> :
                             m.fileType === 'audio' ?
                             <div className={`flex w-full ${isOwn ? 'justify-end' : 'justify-start'} mb-1`}>
                               <div className="inline-flex w-fit max-w-[240px] bg-[#0ea5e9]/20 border border-[#0ea5e9]/40 backdrop-blur-md rounded-[16px] shadow-sm overflow-hidden relative scale-90 origin-left">
-                                  <VoiceMessagePlayer src={m.fileUrl} />
+                                  <VoiceMessagePlayer src={getAssetUrl(m.fileUrl)} />
                               </div>
                             </div> :
 
@@ -1271,7 +1272,7 @@ const ChatWindow = ({ fetchAgain, setFetchAgain, socket, toggleSidebar }) => {
                                         <p className="text-sm font-semibold truncate text-gray-800 dark:text-gray-100">Document</p>
                                         <p className="text-[10px] text-gray-500 dark:text-gray-400 uppercase font-bold tracking-tighter">PDF • 2.4 MB</p>
                                       </div>
-                                      <a href={m.fileUrl} download className="p-2 hover:bg-white dark:hover:bg-[#475569] rounded-full transition-all shadow-sm">
+                                      <a href={getAssetUrl(m.fileUrl)} download className="p-2 hover:bg-white dark:hover:bg-[#475569] rounded-full transition-all shadow-sm">
                                         <Download className="w-4 h-4 text-gray-600 dark:text-gray-300" />
                                       </a>
                                     </div>
@@ -1571,7 +1572,7 @@ const ChatWindow = ({ fetchAgain, setFetchAgain, socket, toggleSidebar }) => {
                   className="w-full flex items-center gap-3 p-3 hover:bg-gray-50 dark:hover:bg-[#334155] rounded-xl transition-colors text-left group">
                   
                     <img
-                    src={chat.isGroup ? `https://ui-avatars.com/api/?name=${chat.name}&background=random` : sender?.profilePic || `https://ui-avatars.com/api/?name=${sender?.name}`}
+                    src={chat.isGroup ? `https://ui-avatars.com/api/?name=${chat.name}&background=random` : getAssetUrl(sender?.profilePic) || `https://ui-avatars.com/api/?name=${sender?.name}`}
                     alt={sender?.name}
                     className="w-10 h-10 rounded-full object-cover border border-gray-100 dark:border-gray-700"
                     referrerPolicy="no-referrer" />

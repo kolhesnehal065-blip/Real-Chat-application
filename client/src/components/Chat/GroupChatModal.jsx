@@ -4,6 +4,7 @@ import { useChat } from '../../context/ChatContext.jsx';
 import api from '../../services/api.js';
 import { X, Search, Loader2, UserPlus, Camera, Plus } from 'lucide-react';
 import { motion } from 'motion/react';
+import { getAssetUrl } from '../../utils/assetUrl.js';
 
 const GroupChatModal = ({ onClose }) => {
   const [groupName, setGroupName] = useState('');
@@ -93,7 +94,7 @@ const GroupChatModal = ({ onClose }) => {
             <div className="relative group">
               <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-gray-200 dark:border-gray-700 bg-gray-100 dark:bg-[#334155] flex items-center justify-center">
                 {groupPic ?
-                <img src={groupPic} alt="Group" className="w-full h-full object-cover" referrerPolicy="no-referrer" /> :
+                <img src={getAssetUrl(groupPic)} alt="Group" className="w-full h-full object-cover" referrerPolicy="no-referrer" /> :
 
                 <Camera className="w-8 h-8 text-gray-400 dark:text-gray-500" />
                 }
@@ -153,7 +154,7 @@ const GroupChatModal = ({ onClose }) => {
               onClick={() => handleGroup(u)}
               className="p-3 flex items-center gap-3 hover:bg-gray-50 dark:hover:bg-[#334155] cursor-pointer rounded-lg transition-colors border border-transparent hover:border-gray-200 dark:hover:border-gray-700">
               
-                  <img src={u.profilePic || `https://ui-avatars.com/api/?name=${u.name}`} className="w-8 h-8 rounded-full" alt={u.name} referrerPolicy="no-referrer" />
+                  <img src={getAssetUrl(u.profilePic) || `https://ui-avatars.com/api/?name=${u.name}`} className="w-8 h-8 rounded-full" alt={u.name} referrerPolicy="no-referrer" />
                   <div className="flex-1">
                     <p className="text-sm font-semibold dark:text-gray-100">{u.name}</p>
                     <p className="text-[10px] text-gray-500 dark:text-gray-400">{u.email}</p>

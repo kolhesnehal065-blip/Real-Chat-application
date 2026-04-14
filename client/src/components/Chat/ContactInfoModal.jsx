@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Mail, Globe, MapPin, X, Info } from 'lucide-react';
 import api from '../../services/api.js';
 import { useAuth } from '../../context/AuthContext';
+import { getAssetUrl } from '../../utils/assetUrl.js';
 
 const ContactInfoModal = ({ isOpen, onClose, user }) => {
   const { auth } = useAuth();
@@ -55,7 +56,7 @@ const ContactInfoModal = ({ isOpen, onClose, user }) => {
               <div className="relative group mb-4">
                 <div className="w-32 h-32 rounded-full overflow-hidden shadow-xl ring-4 ring-white dark:ring-slate-800">
                   <img 
-                    src={profile.profilePic || `https://ui-avatars.com/api/?name=${profile.name}&background=6366f1&color=fff&size=200`} 
+                    src={getAssetUrl(profile.profilePic) || `https://ui-avatars.com/api/?name=${profile.name}&background=6366f1&color=fff&size=200`} 
                     alt={profile.name}
                     className="w-full h-full object-cover"
                   />
